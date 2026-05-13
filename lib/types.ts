@@ -13,7 +13,7 @@ export type EventAccent = 'coral' | 'mint' | 'lavender' | 'butter' | 'peach'
 
 export type EventType = 'club-run' | 'race' | 'workshop' | 'social'
 
-export type Distance = '5K' | '10K' | 'Half' | 'Marathon' | 'Easy' | 'Intervals' | 'Trail'
+export type Distance = '5K' | '10K' | 'Half' | 'Marathon' | 'Easy' | 'Intervals' | 'Trail' | (string & {})
 
 export interface RunningEvent {
   id: string
