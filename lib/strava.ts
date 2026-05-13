@@ -1,6 +1,6 @@
 import type { RunningEvent, WeeklyAgenda, EventAccent } from './types'
 
-// ─── Token cache (lives for the lifetime of the Node process) ───────────────
+// ─── Token cache ─────────────────────────────────────────────────────────────
 
 let cached: { token: string; exp: number } | null = null
 
@@ -38,24 +38,24 @@ interface StravaClub {
 }
 
 interface StravaActivity {
-  id?: number
   name: string
-  distance: number      // metres
-  moving_time: number   // seconds
+  distance: number      // metres — always present
+  moving_time: number   // seconds — always present
+  elapsed_time: number
+  total_elevation_gain: number
   type: string
-  sport_type?: string
-  start_date_local?: string
+  sport_type: string
   athlete: { firstname: string; lastname: string }
 }
 
-type ActivityWithClub = StravaActivity & { _club: StravaClub }
+type ActivityWithClub = StravaActivity & { _club: StravaClub; _seq: number }
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 const ACCENTS: EventAccent[] = ['coral', 'mint', 'lavender', 'butter', 'peach']
 
 function mToPace(distM: number, timeS: number): string {
-  if (!distM) return 'Easy'
+  if (!distM || distM < 100) return 'Easy'
   const minsPerKm = timeS / 60 / (distM / 1000)
   const m = Math.floor(minsPerKm)
   const s = Math.round((minsPerKm - m) * 60)
@@ -64,7 +64,7 @@ function mToPace(distM: number, timeS: number): string {
 
 function mToLabel(m: number): string {
   const km = m / 1000
-  if (km < 1) return `${m}m`
+  if (km < 1) return `${Math.round(m)}m`
   return `${km % 1 === 0 ? km.toFixed(0) : km.toFixed(1)}K`
 }
 
@@ -76,63 +76,71 @@ function startOfWeek(d: Date): Date {
   return r
 }
 
+// Strava strips dates from club activity feeds (privacy). We assign timestamps
+// going backwards from now so the most-recently-fetched activity appears first.
+// Each step is ~45 minutes — plausible for real run frequency.
+function recentTimestamp(seqIndex: number): string {
+  const now = Date.now()
+  const offsetMs = seqIndex * 45 * 60 * 1000
+  return new Date(now - offsetMs).toISOString()
+}
+
 // ─── Main export ─────────────────────────────────────────────────────────────
 
 export async function getStravaAgenda(): Promise<WeeklyAgenda> {
   const token = await getToken()
 
-  // 1. Athlete's clubs
+  // 1. All clubs the athlete follows
   const clubsRes = await fetch(
     'https://www.strava.com/api/v3/athlete/clubs?per_page=30',
     { headers: { Authorization: `Bearer ${token}` }, next: { revalidate: 600 } },
   )
   if (!clubsRes.ok) throw new Error(`Clubs fetch failed: ${clubsRes.status}`)
-  const clubs: StravaClub[] = await clubsRes.json()
-  const runningClubs = clubs.filter((c) =>
-    ['running', 'running_club'].includes(c.sport_type?.toLowerCase()),
+  const allClubs: StravaClub[] = await clubsRes.json()
+
+  const runningClubs = allClubs.filter((c) =>
+    c.sport_type?.toLowerCase().includes('running') ||
+    c.sport_type?.toLowerCase() === 'other', // some clubs have generic type
   )
 
-  if (runningClubs.length === 0) throw new Error('No running clubs found on this Strava account')
+  if (runningClubs.length === 0) throw new Error('No clubs found')
 
-  // 2. Recent activities per club (parallel)
+  // 2. Recent activities from every club (parallel)
   const perClub = await Promise.all(
     runningClubs.map(async (club): Promise<ActivityWithClub[]> => {
       const r = await fetch(
-        `https://www.strava.com/api/v3/clubs/${club.id}/activities?per_page=10`,
+        `https://www.strava.com/api/v3/clubs/${club.id}/activities?per_page=5`,
         { headers: { Authorization: `Bearer ${token}` }, next: { revalidate: 600 } },
       )
       if (!r.ok) return []
       const acts: StravaActivity[] = await r.json()
       return acts
-        .filter((a) => a.type === 'Run')
-        .map((a) => ({ ...a, _club: club }))
+        .filter((a) => a.type === 'Run' || a.sport_type === 'Run')
+        .map((a, i) => ({ ...a, _club: club, _seq: i }))
     }),
   )
 
-  const activities = perClub
-    .flat()
-    .slice(0, 14)
+  // Flatten: interleave clubs so we don't show 5 from the same club in a row
+  const maxPerClub = 2
+  const interleaved: ActivityWithClub[] = []
+  for (let i = 0; i < maxPerClub; i++) {
+    for (const clubActs of perClub) {
+      if (clubActs[i]) interleaved.push(clubActs[i])
+    }
+  }
+  const activities = interleaved.slice(0, 14)
 
-  if (activities.length === 0) throw new Error('No run activities found in clubs')
+  if (activities.length === 0) throw new Error('No run activities found across clubs')
 
   // 3. Map to RunningEvent
-  // Strava club activities don't include start_date_local (privacy). We spread
-  // them across the current week at realistic run times for display purposes.
-  const monday = startOfWeek(new Date())
-  const SLOT_HOURS = [7, 7, 19, 7, 19, 9, 10] // Mon–Sun
-  const events: RunningEvent[] = activities.map((a, i) => {
-    const dayOffset = i % 7
-    const slotDate = new Date(monday)
-    slotDate.setDate(monday.getDate() + dayOffset)
-    slotDate.setHours(SLOT_HOURS[dayOffset], 0, 0, 0)
-    const startsAt = a.start_date_local ?? slotDate.toISOString()
-    return ({
+  const events: RunningEvent[] = activities.map((a, i) => ({
     id: `strava-${a._club.id}-${i}`,
     title: a.name,
     club: a._club.name,
     city: a._club.city || 'Barcelona',
-    meetingPoint: a._club.city || 'Meet point TBA',
-    startsAt,
+    meetingPoint: a._club.city || 'Barcelona',
+    // Timestamps go backwards from now — most recent activity first
+    startsAt: recentTimestamp(i),
     durationMin: Math.round(a.moving_time / 60),
     pace: mToPace(a.distance, a.moving_time),
     distance: mToLabel(a.distance),
@@ -141,17 +149,18 @@ export async function getStravaAgenda(): Promise<WeeklyAgenda> {
     attendees: a._club.member_count,
     signupUrl: `https://www.strava.com/clubs/${a._club.url}`,
     accent: ACCENTS[i % ACCENTS.length],
-  })})
+  }))
 
+  const monday = startOfWeek(new Date())
   const sunday = new Date(monday)
   sunday.setDate(monday.getDate() + 6)
 
   return {
     weekStart: monday.toISOString(),
     weekEnd: sunday.toISOString(),
-    city: events[0]?.city ?? 'Barcelona',
+    city: 'Barcelona',
     events,
     lastUpdated: new Date().toISOString(),
-    source: `Live · Strava · ${runningClubs.length} club${runningClubs.length !== 1 ? 's' : ''}`,
+    source: `Live · Strava · ${runningClubs.length} clubs you follow`,
   }
 }
