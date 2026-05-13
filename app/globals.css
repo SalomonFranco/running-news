@@ -1,0 +1,97 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --rn-base:     #FAF7F2;
+    --rn-surface:  #FFFFFF;
+    --rn-ink:      #0E0E14;
+    --rn-smoke:    #1E1E26;
+    --rn-muted:    #73707A;
+    --rn-faint:    #B5B0B3;
+
+    --coral:    #FF8B7A;
+    --mint:     #A8DBC5;
+    --lavender: #C9B8F1;
+    --butter:   #FFE07A;
+    --peach:    #FFD2A8;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    background: var(--rn-base);
+  }
+
+  body {
+    background: var(--rn-base);
+    color: var(--rn-ink);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    font-feature-settings: "ss01", "cv11";
+  }
+
+  ::selection {
+    background: var(--coral);
+    color: var(--rn-ink);
+  }
+
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--rn-base); }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(14,14,20,0.15);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(14,14,20,0.3); }
+
+  /* Reduce motion if user prefers */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+
+  /* Skewed/kinetic underline for editorial vibe */
+  .kinetic-link {
+    position: relative;
+    display: inline-block;
+  }
+  .kinetic-link::after {
+    content: '';
+    position: absolute;
+    left: 0; bottom: -2px;
+    width: 100%;
+    height: 1.5px;
+    background: currentColor;
+    transform-origin: right;
+    transform: scaleX(0);
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .kinetic-link:hover::after {
+    transform-origin: left;
+    transform: scaleX(1);
+  }
+
+  /* Subtle grain — pastel canvases can feel sterile without it */
+  .grain::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/></svg>");
+    opacity: 0.06;
+    mix-blend-mode: multiply;
+  }
+}
