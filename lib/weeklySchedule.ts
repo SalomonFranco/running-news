@@ -180,7 +180,7 @@ export function getWeeklySchedule(): RunningEvent[] {
 
   const events: RunningEvent[] = []
 
-  for (let dayOffset = 0; dayOffset < 8; dayOffset++) {
+  for (let dayOffset = 0; dayOffset < 7; dayOffset++) {
     // Build the calendar day for this offset (UTC midnight, safe for date math)
     const calDay = new Date(Date.UTC(
       todayMadrid.getFullYear(),

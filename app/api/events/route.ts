@@ -51,7 +51,7 @@ export async function GET() {
   ].sort((a, b) => new Date(a.startsAt).getTime() - new Date(b.startsAt).getTime())
 
   const today = new Date()
-  const windowEnd = addDays(today, 7)
+  const windowEnd = addDays(today, 6)
 
   const payload: WeeklyAgenda = {
     weekStart: today.toISOString(),
