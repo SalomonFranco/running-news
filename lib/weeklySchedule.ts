@@ -1,0 +1,210 @@
+import type { RunningEvent, EventAccent } from './types'
+
+/**
+ * Real recurring running club schedule for Barcelona.
+ * Days: 0=Sun 1=Mon 2=Tue 3=Wed 4=Thu 5=Fri 6=Sat
+ */
+
+interface RecurringSlot {
+  club: string
+  title: string
+  meetingPoint: string
+  days: number[]          // day-of-week indices
+  hour: number
+  minute: number
+  durationMin: number
+  distance?: string
+  pace?: string
+  type: RunningEvent['type']
+  accent: EventAccent
+  signupUrl: string
+  attendeesApprox: number
+}
+
+const SLOTS: RecurringSlot[] = [
+  {
+    club: 'Parkrun Barceloneta',
+    title: 'Parkrun Barceloneta · Timed 5K',
+    meetingPoint: 'Barceloneta seafront promenade',
+    days: [6], // Saturday
+    hour: 9, minute: 0, durationMin: 40,
+    distance: '5K', pace: 'All paces',
+    type: 'race',
+    accent: 'coral',
+    signupUrl: 'https://www.parkrun.es/barceloneta/',
+    attendeesApprox: 200,
+  },
+  {
+    club: 'Adidas Runners Barcelona',
+    title: 'Adidas Runners · Tuesday Session',
+    meetingPoint: 'Check @runners.barcelona on Instagram',
+    days: [2], // Tuesday
+    hour: 19, minute: 30, durationMin: 60,
+    distance: '8K', pace: '5:30/km',
+    type: 'club-run',
+    accent: 'mint',
+    signupUrl: 'https://www.instagram.com/runners.barcelona/',
+    attendeesApprox: 120,
+  },
+  {
+    club: 'Adidas Runners Barcelona',
+    title: 'Adidas Runners · Wednesday Session',
+    meetingPoint: 'Check @runners.barcelona on Instagram',
+    days: [3], // Wednesday
+    hour: 19, minute: 30, durationMin: 60,
+    distance: '8K', pace: '5:30/km',
+    type: 'club-run',
+    accent: 'mint',
+    signupUrl: 'https://www.instagram.com/runners.barcelona/',
+    attendeesApprox: 120,
+  },
+  {
+    club: 'Adidas Runners Barcelona',
+    title: 'Adidas Runners · Thursday Session',
+    meetingPoint: 'Check @runners.barcelona on Instagram',
+    days: [4], // Thursday
+    hour: 19, minute: 30, durationMin: 60,
+    distance: '8K', pace: '5:30/km',
+    type: 'club-run',
+    accent: 'mint',
+    signupUrl: 'https://www.instagram.com/runners.barcelona/',
+    attendeesApprox: 120,
+  },
+  {
+    club: 'Midnight Runners Barcelona',
+    title: 'Midnight Runners · Bootcamp 6K',
+    meetingPoint: 'Check Heylo app or @midnightrunnersbarcelona',
+    days: [3], // Wednesday
+    hour: 20, minute: 0, durationMin: 75,
+    distance: '6K', pace: 'Intervals + music',
+    type: 'social',
+    accent: 'lavender',
+    signupUrl: 'https://www.instagram.com/midnightrunnersbarcelona/',
+    attendeesApprox: 85,
+  },
+  {
+    club: 'B3TTER Run Club',
+    title: 'B3TTER Run Club · Morning 5–10K',
+    meetingPoint: 'La Cala, Barceloneta',
+    days: [2], // Tuesday
+    hour: 7, minute: 0, durationMin: 65,
+    distance: '5–10K', pace: 'Conversational',
+    type: 'club-run',
+    accent: 'butter',
+    signupUrl: 'https://www.instagram.com/b3tterrunclub/',
+    attendeesApprox: 50,
+  },
+  {
+    club: 'Ordinary Run Club',
+    title: 'Ordinary Run Club · Social 5K',
+    meetingPoint: 'Check @ordinaryrunclub on Instagram for weekly point',
+    days: [2], // Tuesday
+    hour: 19, minute: 0, durationMin: 50,
+    distance: '5K', pace: 'All paces',
+    type: 'social',
+    accent: 'peach',
+    signupUrl: 'https://www.instagram.com/ordinaryrunclub/',
+    attendeesApprox: 40,
+  },
+  {
+    club: 'Nike Run Club Barcelona',
+    title: 'Nike Run Club · Coached Session',
+    meetingPoint: 'Nike Store, Passeig de Gràcia — confirm on NRC app',
+    days: [2, 4], // Tuesday & Thursday (typical NRC schedule)
+    hour: 19, minute: 0, durationMin: 60,
+    distance: '6–8K', pace: 'Coached',
+    type: 'club-run',
+    accent: 'coral',
+    signupUrl: 'https://www.nike.com/es/runningclub',
+    attendeesApprox: 70,
+  },
+  {
+    club: 'Barcelona Casual Runners',
+    title: 'Barcelona Casual Runners · Parc Ciutadella',
+    meetingPoint: 'Parc de la Ciutadella entrance',
+    days: [2, 4], // Tuesday & Thursday
+    hour: 20, minute: 0, durationMin: 60,
+    distance: '5–7K', pace: 'Easy',
+    type: 'social',
+    accent: 'mint',
+    signupUrl: 'https://www.meetup.com/barcelona-casual-runners/',
+    attendeesApprox: 30,
+  },
+  {
+    club: 'Sunrise Runners Barcelona',
+    title: 'Sunrise Runners · Coastal Morning Run',
+    meetingPoint: 'Barceloneta Beach — coffee after',
+    days: [1, 3, 5, 0], // Mon, Wed, Fri, Sun (4 mornings)
+    hour: 7, minute: 0, durationMin: 50,
+    distance: '6–10K', pace: 'Easy conversational',
+    type: 'club-run',
+    accent: 'butter',
+    signupUrl: 'https://www.instagram.com/sunriserunnersbarcelona/',
+    attendeesApprox: 25,
+  },
+]
+
+function startOfWeek(d: Date): Date {
+  const r = new Date(d)
+  const day = r.getDay()
+  r.setDate(r.getDate() - day + (day === 0 ? -6 : 1))
+  r.setHours(0, 0, 0, 0)
+  return r
+}
+
+// Returns Europe/Madrid UTC offset in hours for a given date (+1 CET / +2 CEST).
+// Works correctly regardless of server timezone so Vercel (UTC) and local match.
+function madridOffset(date: Date): number {
+  const noon = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), 12, 0, 0))
+  const h = parseInt(
+    noon.toLocaleString('en-US', { timeZone: 'Europe/Madrid', hour: 'numeric', hour12: false }),
+  )
+  return h - 12 // 14 - 12 = +2 in summer, 13 - 12 = +1 in winter
+}
+
+// Builds a UTC Date for a specific Madrid local time on a given calendar day.
+function madridDateTime(calendarDay: Date, hour: number, minute: number): Date {
+  const offset = madridOffset(calendarDay)
+  return new Date(Date.UTC(
+    calendarDay.getFullYear(),
+    calendarDay.getMonth(),
+    calendarDay.getDate(),
+    hour - offset,
+    minute,
+    0,
+  ))
+}
+
+export function getWeeklySchedule(): RunningEvent[] {
+  const monday = startOfWeek(new Date())
+  const events: RunningEvent[] = []
+
+  for (const slot of SLOTS) {
+    for (const dayOfWeek of slot.days) {
+      const offset = dayOfWeek === 0 ? 6 : dayOfWeek - 1
+      const calDay = new Date(monday)
+      calDay.setDate(monday.getDate() + offset)
+
+      events.push({
+        id: `schedule-${slot.club.replace(/\s+/g, '-').toLowerCase()}-day${dayOfWeek}`,
+        title: slot.title,
+        club: slot.club,
+        city: 'Barcelona',
+        meetingPoint: slot.meetingPoint,
+        startsAt: madridDateTime(calDay, slot.hour, slot.minute).toISOString(),
+        durationMin: slot.durationMin,
+        distance: slot.distance,
+        pace: slot.pace,
+        type: slot.type,
+        attendees: slot.attendeesApprox,
+        signupUrl: slot.signupUrl,
+        accent: slot.accent,
+      })
+    }
+  }
+
+  // Sort by start time
+  return events.sort(
+    (a, b) => new Date(a.startsAt).getTime() - new Date(b.startsAt).getTime(),
+  )
+}
