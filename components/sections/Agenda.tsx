@@ -78,15 +78,15 @@ export default function Agenda() {
               className="font-display font-bold text-rn-ink tracking-[-0.025em] leading-[0.95]"
               style={{ fontSize: 'clamp(2.5rem, 6vw, 5rem)' }}
             >
-              Your clubs,
+              Events from
               <br />
-              <span className="italic text-coral">running now.</span>
+              <span className="italic text-coral">your clubs.</span>
             </h2>
           </div>
 
           <div className="lg:text-right text-sm text-rn-muted leading-relaxed max-w-[340px]">
             <p>
-              Recent runs · {data?.events.length ?? '—'} activities across your clubs
+              {data?.source ?? 'Loading…'}
             </p>
             <p className="text-rn-faint text-xs mt-2 flex items-center lg:justify-end gap-1.5">
               <ArrowsClockwise size={11} weight="bold" />

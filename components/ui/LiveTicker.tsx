@@ -8,19 +8,27 @@ interface Props {
   events: RunningEvent[]
 }
 
-function minsAgo(iso: string): string {
-  const diff = Math.round((Date.now() - new Date(iso).getTime()) / 60000)
-  if (diff < 1) return 'just now'
-  if (diff < 60) return `${diff}m ago`
-  const h = Math.floor(diff / 60)
-  return `${h}h ago`
+function timeLabel(iso: string): string {
+  const diff = new Date(iso).getTime() - Date.now()
+  if (diff > 0) {
+    const h = Math.floor(diff / 3600000)
+    const d = Math.floor(h / 24)
+    if (d > 0) return `in ${d}d`
+    if (h > 0) return `in ${h}h`
+    return `in <1h`
+  }
+  const ago = Math.abs(diff)
+  const h = Math.floor(ago / 3600000)
+  const d = Math.floor(h / 24)
+  if (d > 0) return `${d}d ago`
+  if (h > 0) return `${h}h ago`
+  return 'recent'
 }
 
 export default function LiveTicker({ events }: Props) {
   const [idx, setIdx] = useState(0)
   const [tick, setTick] = useState(0)
 
-  // Cycle through events every 5s so all clubs get visibility
   useEffect(() => {
     if (events.length === 0) return
     const t = setInterval(() => {
@@ -32,6 +40,7 @@ export default function LiveTicker({ events }: Props) {
 
   if (!events.length) return null
   const e = events[idx]
+  const isFuture = new Date(e.startsAt).getTime() > Date.now()
 
   return (
     <motion.div
@@ -48,22 +57,19 @@ export default function LiveTicker({ events }: Props) {
         className="flex items-center gap-3 px-5 py-2.5 rounded-full bg-rn-ink text-rn-base shadow-[0_8px_32px_-12px_rgba(14,14,20,0.35)]"
         style={{ fontSize: '0.78rem' }}
       >
-        {/* Live dot */}
         <span className="relative flex items-center">
           <span className="absolute inline-flex h-2 w-2 rounded-full bg-mint opacity-75 animate-ping" />
           <span className="relative inline-flex h-2 w-2 rounded-full bg-mint" />
         </span>
-
-        <span className="tracking-[0.18em] uppercase font-medium text-mint">Live</span>
+        <span className="tracking-[0.18em] uppercase font-medium text-mint">
+          {isFuture ? 'Upcoming' : 'Recent'}
+        </span>
         <span className="w-px h-3 bg-white/20" />
-
-        <span className="font-medium truncate max-w-[160px] sm:max-w-[260px]">{e.title}</span>
+        <span className="font-medium truncate max-w-[160px] sm:max-w-[240px]">{e.title}</span>
         <span className="w-px h-3 bg-white/20" />
-
         <span className="text-white/60 truncate max-w-[100px] hidden sm:inline">{e.club}</span>
         <span className="w-px h-3 bg-white/20 hidden sm:inline" />
-
-        <span className="tabular-nums text-white/70">{minsAgo(e.startsAt)}</span>
+        <span className="tabular-nums text-white/70">{timeLabel(e.startsAt)}</span>
       </motion.div>
     </motion.div>
   )
