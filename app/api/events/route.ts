@@ -5,11 +5,9 @@ import type { RunningEvent, WeeklyAgenda } from '@/lib/types'
 
 export const revalidate = 600
 
-function startOfWeek(d: Date): Date {
+function addDays(d: Date, n: number): Date {
   const r = new Date(d)
-  const day = r.getDay()
-  r.setDate(r.getDate() - day + (day === 0 ? -6 : 1))
-  r.setHours(0, 0, 0, 0)
+  r.setDate(r.getDate() + n)
   return r
 }
 
@@ -52,13 +50,12 @@ export async function GET() {
     ...filteredSchedule,
   ].sort((a, b) => new Date(a.startsAt).getTime() - new Date(b.startsAt).getTime())
 
-  const monday = startOfWeek(new Date())
-  const sunday = new Date(monday)
-  sunday.setDate(monday.getDate() + 6)
+  const today = new Date()
+  const windowEnd = addDays(today, 7)
 
   const payload: WeeklyAgenda = {
-    weekStart: monday.toISOString(),
-    weekEnd: sunday.toISOString(),
+    weekStart: today.toISOString(),
+    weekEnd: windowEnd.toISOString(),
     city: 'Barcelona',
     events: merged,
     lastUpdated: new Date().toISOString(),

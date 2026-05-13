@@ -70,7 +70,7 @@ export default function Agenda() {
           <div>
             <div className="flex items-center gap-3 mb-6">
               <span className="text-xs uppercase tracking-[0.22em] text-rn-muted font-medium">
-                The week ahead
+                Today + next 7 days
               </span>
               <div className="w-12 h-px bg-rn-line" />
             </div>

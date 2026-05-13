@@ -112,11 +112,9 @@ export default function Hero() {
             >
               <span className="flex items-center gap-2 text-xs tracking-[0.22em] uppercase font-medium text-rn-ink">
                 <Calendar size={14} weight="bold" />
-                Week of{' '}
-                {new Date().toLocaleDateString('en-US', {
-                  month: 'long',
-                  day: 'numeric',
-                })}
+                {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                {' → '}
+                {new Date(Date.now() + 7 * 86400000).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
               </span>
               <div className="w-12 h-px bg-rn-ink" />
               <span className="flex items-center gap-2 text-xs tracking-[0.22em] uppercase font-medium text-rn-muted">

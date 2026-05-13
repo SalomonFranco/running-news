@@ -144,14 +144,6 @@ const SLOTS: RecurringSlot[] = [
   },
 ]
 
-function startOfWeek(d: Date): Date {
-  const r = new Date(d)
-  const day = r.getDay()
-  r.setDate(r.getDate() - day + (day === 0 ? -6 : 1))
-  r.setHours(0, 0, 0, 0)
-  return r
-}
-
 // Returns Europe/Madrid UTC offset in hours for a given date (+1 CET / +2 CEST).
 // Works correctly regardless of server timezone so Vercel (UTC) and local match.
 function madridOffset(date: Date): number {
@@ -175,23 +167,45 @@ function madridDateTime(calendarDay: Date, hour: number, minute: number): Date {
   ))
 }
 
+// Rolling 8-day window: today + the next 7 days.
+// Because the schedule is weekly-recurring, this always returns the correct
+// real-world dates no matter what day you visit the site.
 export function getWeeklySchedule(): RunningEvent[] {
-  const monday = startOfWeek(new Date())
+  const now = new Date()
+  // Calendar "today" in Madrid timezone — determines which day-of-week we're on
+  const todayMadrid = new Date(
+    now.toLocaleString('en-US', { timeZone: 'Europe/Madrid' }),
+  )
+  todayMadrid.setHours(0, 0, 0, 0)
+
   const events: RunningEvent[] = []
 
-  for (const slot of SLOTS) {
-    for (const dayOfWeek of slot.days) {
-      const offset = dayOfWeek === 0 ? 6 : dayOfWeek - 1
-      const calDay = new Date(monday)
-      calDay.setDate(monday.getDate() + offset)
+  for (let dayOffset = 0; dayOffset < 8; dayOffset++) {
+    // Build the calendar day for this offset (UTC midnight, safe for date math)
+    const calDay = new Date(Date.UTC(
+      todayMadrid.getFullYear(),
+      todayMadrid.getMonth(),
+      todayMadrid.getDate() + dayOffset,
+    ))
+    const dayOfWeek = new Date(
+      calDay.toLocaleString('en-US', { timeZone: 'Europe/Madrid' }),
+    ).getDay()  // 0=Sun … 6=Sat in Madrid timezone
+
+    for (const slot of SLOTS) {
+      if (!slot.days.includes(dayOfWeek)) continue
+
+      const eventTime = madridDateTime(calDay, slot.hour, slot.minute)
+
+      // On the first day (today) skip events that have already started
+      if (dayOffset === 0 && eventTime.getTime() < now.getTime()) continue
 
       events.push({
-        id: `schedule-${slot.club.replace(/\s+/g, '-').toLowerCase()}-day${dayOfWeek}`,
+        id: `schedule-${slot.club.replace(/\s+/g, '-').toLowerCase()}-${calDay.toISOString().slice(0, 10)}`,
         title: slot.title,
         club: slot.club,
         city: 'Barcelona',
         meetingPoint: slot.meetingPoint,
-        startsAt: madridDateTime(calDay, slot.hour, slot.minute).toISOString(),
+        startsAt: eventTime.toISOString(),
         durationMin: slot.durationMin,
         distance: slot.distance,
         pace: slot.pace,
