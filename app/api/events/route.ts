@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { getStravaAgenda } from '@/lib/strava'
 import { getWeeklySchedule } from '@/lib/weeklySchedule'
+import { getInstagramEvents } from '@/lib/instagram'
 import type { RunningEvent, WeeklyAgenda } from '@/lib/types'
 
 export const revalidate = 600
@@ -12,29 +13,31 @@ function addDays(d: Date, n: number): Date {
 }
 
 export async function GET() {
-  // 1. Weekly schedule — always works, no network needed
   const scheduleEvents = getWeeklySchedule()
 
-  // 2. Strava confirmed events — real group events from followed clubs
   let stravaEvents: RunningEvent[] = []
   let stravaSource = ''
   try {
     const agenda = await getStravaAgenda()
-    // Only take upcoming Strava events (future dates) — they override the schedule
     stravaEvents = agenda.events.filter(
       (e) => new Date(e.startsAt).getTime() > Date.now(),
     )
     stravaSource = stravaEvents.length > 0
       ? ` · ${stravaEvents.length} confirmed on Strava`
       : ''
-  } catch {
-    // Strava down — schedule still shows
-  }
+  } catch { /* Strava down — continue */ }
 
-  // 3. Merge: Strava upcoming events first, then weekly schedule
-  //    Deduplicate by club+day so a Strava event doesn't double with the schedule
-  const stravaClubDays = new Set(
-    stravaEvents.map((e) => {
+  let instagramEvents: RunningEvent[] = []
+  let igSource = ''
+  try {
+    instagramEvents = await getInstagramEvents()
+    igSource = instagramEvents.length > 0
+      ? ` · ${instagramEvents.length} from Instagram`
+      : ''
+  } catch { /* Supabase down — continue */ }
+
+  const confirmedKeys = new Set(
+    [...stravaEvents, ...instagramEvents].map((e) => {
       const d = new Date(e.startsAt)
       return `${e.club}-${d.toDateString()}`
     }),
@@ -42,11 +45,12 @@ export async function GET() {
 
   const filteredSchedule = scheduleEvents.filter((e) => {
     const d = new Date(e.startsAt)
-    return !stravaClubDays.has(`${e.club}-${d.toDateString()}`)
+    return !confirmedKeys.has(`${e.club}-${d.toDateString()}`)
   })
 
   const merged: RunningEvent[] = [
     ...stravaEvents,
+    ...instagramEvents,
     ...filteredSchedule,
   ].sort((a, b) => new Date(a.startsAt).getTime() - new Date(b.startsAt).getTime())
 
@@ -59,7 +63,7 @@ export async function GET() {
     city: 'Barcelona',
     events: merged,
     lastUpdated: new Date().toISOString(),
-    source: `Recurring schedule · 8 Barcelona clubs${stravaSource}`,
+    source: `Recurring schedule · 8 clubs${igSource}${stravaSource}`,
   }
 
   return NextResponse.json(payload, {
