@@ -20,6 +20,8 @@ interface InstagramEventRow {
   accent: string
 }
 
+const VALID_ACCENTS = new Set<EventAccent>(['coral', 'mint', 'lavender', 'butter', 'peach'])
+
 export async function getInstagramEvents(): Promise<RunningEvent[]> {
   const supabase = getSupabaseClient()
   const now = new Date().toISOString()
@@ -34,17 +36,20 @@ export async function getInstagramEvents(): Promise<RunningEvent[]> {
 
   if (error) throw new Error(`Supabase query failed: ${error.message}`)
 
-  return (data as InstagramEventRow[]).map((row) => ({
-    id: `ig-${row.id.slice(-12)}`,
-    title: row.title,
-    club: row.club,
-    city: 'Barcelona',
-    meetingPoint: row.meeting_point ?? 'See Instagram post',
-    startsAt: row.starts_at,
-    durationMin: 60,
-    distance: row.distance ?? undefined,
-    type: 'social' as const,
-    signupUrl: row.post_url,
-    accent: (row.accent as EventAccent) ?? 'coral',
-  }))
+  const rows = (data ?? []) as InstagramEventRow[]
+  return rows
+    .filter((row) => row.id && row.title && row.club && row.starts_at && row.post_url)
+    .map((row) => ({
+      id: `ig-${row.id.slice(-12)}`,
+      title: row.title,
+      club: row.club,
+      city: 'Barcelona',
+      meetingPoint: row.meeting_point ?? 'See Instagram post',
+      startsAt: row.starts_at,
+      durationMin: 60,
+      distance: row.distance ?? undefined,
+      type: 'social' as const,
+      signupUrl: row.post_url,
+      accent: (VALID_ACCENTS.has(row.accent as EventAccent) ? row.accent : 'coral') as EventAccent,
+    }))
 }
