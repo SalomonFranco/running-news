@@ -39,6 +39,7 @@ const TYPE_LABEL: Record<RunningEvent['type'], string> = {
 
 export default function EventCard({ event, index }: Props) {
   const ref = useRef<HTMLDivElement>(null)
+  const { signupUrl } = event
 
   // Raw mouse position relative to card (-0.5 .. 0.5)
   const mx = useMotionValue(0)
@@ -68,7 +69,7 @@ export default function EventCard({ event, index }: Props) {
     my.set(0)
   }
 
-  return (
+  const card = (
     <motion.div
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -151,14 +152,16 @@ export default function EventCard({ event, index }: Props) {
             )}
           </div>
 
-          {/* CTA arrow */}
-          <motion.span
-            className="w-9 h-9 rounded-full bg-rn-ink text-rn-base flex items-center justify-center flex-shrink-0"
-            whileHover={{ rotate: 45 }}
-            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <ArrowUpRight size={14} weight="bold" />
-          </motion.span>
+          {/* CTA arrow — only when there's a destination */}
+          {signupUrl && (
+            <motion.span
+              className="w-9 h-9 rounded-full bg-rn-ink text-rn-base flex items-center justify-center flex-shrink-0"
+              whileHover={{ rotate: 45 }}
+              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <ArrowUpRight size={14} weight="bold" />
+            </motion.span>
+          )}
         </footer>
 
         {/* Distance/pace badge — bottom-left of card */}
@@ -171,5 +174,19 @@ export default function EventCard({ event, index }: Props) {
         )}
       </motion.article>
     </motion.div>
+  )
+
+  if (!signupUrl) return card
+
+  return (
+    <a
+      href={signupUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="block"
+      aria-label={`View event: ${event.title}`}
+    >
+      {card}
+    </a>
   )
 }

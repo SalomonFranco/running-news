@@ -76,10 +76,8 @@ export async function getStravaAgenda(): Promise<WeeklyAgenda> {
   )
   if (!clubsRes.ok) throw new Error(`Clubs fetch failed: ${clubsRes.status}`)
   const allClubs: StravaClub[] = await clubsRes.json()
-  const runningClubs = allClubs.filter((c) =>
-    c.sport_type?.toLowerCase().includes('running'),
-  )
-  if (runningClubs.length === 0) throw new Error('No running clubs found')
+  const runningClubs = allClubs
+  if (runningClubs.length === 0) throw new Error('No clubs found')
 
   // 2. Fetch group_events from every club in parallel
   const perClub = await Promise.all(
@@ -139,7 +137,7 @@ export async function getStravaAgenda(): Promise<WeeklyAgenda> {
     return new Date(b.date).getTime() - new Date(a.date).getTime()
   })
 
-  const top = entries.slice(0, 14)
+  const top = entries
   if (top.length === 0) throw new Error('No group events found across clubs')
 
   // 4. Map to RunningEvent

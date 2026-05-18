@@ -17,7 +17,7 @@ interface RecurringSlot {
   pace?: string
   type: RunningEvent['type']
   accent: EventAccent
-  signupUrl: string
+  signupUrl?: string
   attendeesApprox: number
 }
 
@@ -119,6 +119,18 @@ const SLOTS: RecurringSlot[] = [
     attendeesApprox: 70,
   },
   {
+    club: 'Club Rodeo',
+    title: 'Club Rodeo · Tuesday 5K',
+    meetingPoint: 'Nudes — Carrer del Rec 10',
+    days: [2], // Tuesday
+    hour: 19, minute: 0, durationMin: 45,
+    distance: '5K',
+    type: 'club-run',
+    accent: 'peach',
+    signupUrl: 'https://www.instagram.com/club__rodeo/',
+    attendeesApprox: 20,
+  },
+  {
     club: 'Barcelona Casual Runners',
     title: 'Barcelona Casual Runners · Parc Ciutadella',
     meetingPoint: 'Parc de la Ciutadella entrance',
@@ -129,18 +141,6 @@ const SLOTS: RecurringSlot[] = [
     accent: 'mint',
     signupUrl: 'https://www.meetup.com/barcelona-casual-runners/',
     attendeesApprox: 30,
-  },
-  {
-    club: 'Sunrise Runners Barcelona',
-    title: 'Sunrise Runners · Coastal Morning Run',
-    meetingPoint: 'Barceloneta Beach — coffee after',
-    days: [1, 3, 5, 0], // Mon, Wed, Fri, Sun (4 mornings)
-    hour: 7, minute: 0, durationMin: 50,
-    distance: '6–10K', pace: 'Easy conversational',
-    type: 'club-run',
-    accent: 'butter',
-    signupUrl: 'https://www.instagram.com/sunriserunnersbarcelona/',
-    attendeesApprox: 25,
   },
 ]
 
