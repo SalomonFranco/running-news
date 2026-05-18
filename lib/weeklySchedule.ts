@@ -107,18 +107,6 @@ const SLOTS: RecurringSlot[] = [
     attendeesApprox: 40,
   },
   {
-    club: 'Nike Run Club Barcelona',
-    title: 'Nike Run Club · Coached Session',
-    meetingPoint: 'Nike Store, Passeig de Gràcia — confirm on NRC app',
-    days: [2, 4], // Tuesday & Thursday (typical NRC schedule)
-    hour: 19, minute: 0, durationMin: 60,
-    distance: '6–8K', pace: 'Coached',
-    type: 'club-run',
-    accent: 'coral',
-    signupUrl: 'https://www.nike.com/es/runningclub',
-    attendeesApprox: 70,
-  },
-  {
     club: 'Club Rodeo',
     title: 'Club Rodeo · Tuesday 5K',
     meetingPoint: 'Nudes — Carrer del Rec 10',
