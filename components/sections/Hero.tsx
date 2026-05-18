@@ -53,7 +53,7 @@ export default function Hero() {
       {/* Decorative pastel blobs — parallax */}
       <motion.div
         style={{ y: blob1Y }}
-        className="absolute -top-40 -right-32 w-[640px] h-[640px] rounded-full pointer-events-none"
+        className="absolute -top-40 -right-32 w-[min(640px,80vw)] h-[min(640px,80vw)] rounded-full pointer-events-none"
         aria-hidden="true"
       >
         <div
@@ -67,7 +67,7 @@ export default function Hero() {
       </motion.div>
       <motion.div
         style={{ y: blob2Y }}
-        className="absolute top-1/2 -left-40 w-[520px] h-[520px] rounded-full pointer-events-none"
+        className="absolute top-1/2 -left-40 w-[min(520px,70vw)] h-[min(520px,70vw)] rounded-full pointer-events-none"
         aria-hidden="true"
       >
         <div
@@ -81,7 +81,7 @@ export default function Hero() {
       </motion.div>
       <motion.div
         style={{ y: blob2Y }}
-        className="absolute bottom-0 right-1/4 w-[380px] h-[380px] rounded-full pointer-events-none"
+        className="absolute bottom-0 right-1/4 w-[min(380px,60vw)] h-[min(380px,60vw)] rounded-full pointer-events-none"
         aria-hidden="true"
       >
         <div
@@ -97,7 +97,7 @@ export default function Hero() {
       {/* Content */}
       <motion.div
         style={{ y: titleY, opacity: titleOpacity }}
-        className="relative z-10 min-h-[100dvh] flex flex-col justify-center pt-32 pb-20"
+        className="relative z-10 min-h-[100dvh] flex flex-col justify-center pt-20 sm:pt-32 pb-10 sm:pb-20"
       >
         <div className="max-w-[1440px] w-full mx-auto px-6 lg:px-12">
           <motion.div
@@ -108,7 +108,7 @@ export default function Hero() {
             {/* Eyebrow */}
             <motion.div
               variants={item}
-              className="flex items-center gap-4 mb-10"
+              className="flex items-center gap-4 mb-6 sm:mb-10"
             >
               <span className="flex items-center gap-2 text-xs tracking-[0.22em] uppercase font-medium text-rn-ink">
                 <Calendar size={14} weight="bold" />
@@ -125,7 +125,7 @@ export default function Hero() {
 
             {/* Display title — clip-path line reveals */}
             <h1
-              className="font-display font-bold tracking-[-0.03em] text-rn-ink leading-[0.86] mb-8"
+              className="font-display font-bold tracking-[-0.03em] text-rn-ink leading-[0.86] mb-4 sm:mb-8"
               style={{ fontSize: 'clamp(3.5rem, 12vw, 11rem)' }}
             >
               <div className="overflow-hidden">
@@ -147,7 +147,7 @@ export default function Hero() {
             {/* Description */}
             <motion.p
               variants={item}
-              className="text-rn-muted text-lg lg:text-xl max-w-[52ch] leading-[1.55] mb-12"
+              className="text-rn-muted text-lg lg:text-xl max-w-[52ch] leading-[1.55] mb-8 sm:mb-12"
             >
               The weekly agenda of every running event in your city.{' '}
               <span className="text-rn-ink font-medium">Live, curated, free.</span>{' '}
@@ -202,7 +202,7 @@ export default function Hero() {
             {/* Stat row */}
             <motion.div
               variants={item}
-              className="mt-20 grid grid-cols-3 max-w-[560px] gap-8"
+              className="mt-10 sm:mt-20 grid grid-cols-1 sm:grid-cols-3 max-w-[560px] gap-4 sm:gap-8"
             >
               {[
                 { n: '7',    label: 'days curated' },
