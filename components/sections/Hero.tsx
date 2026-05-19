@@ -97,7 +97,7 @@ export default function Hero() {
       {/* Content */}
       <motion.div
         style={{ y: titleY, opacity: titleOpacity }}
-        className="relative z-10 min-h-[100dvh] flex flex-col justify-center pt-20 sm:pt-32 pb-10 sm:pb-20"
+        className="relative z-10 min-h-[100dvh] flex flex-col justify-start sm:justify-center pt-[136px] sm:pt-32 pb-10 sm:pb-20"
       >
         <div className="max-w-[1440px] w-full mx-auto px-6 lg:px-12">
           <motion.div
