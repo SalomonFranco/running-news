@@ -56,12 +56,15 @@ export async function GET() {
 
   const today = new Date()
   const windowEnd = addDays(today, 6)
+  windowEnd.setHours(23, 59, 59, 999)
 
   const payload: WeeklyAgenda = {
     weekStart: today.toISOString(),
     weekEnd: windowEnd.toISOString(),
     city: 'Barcelona',
-    events: merged,
+    events: merged.filter(
+      (e) => new Date(e.startsAt).getTime() <= windowEnd.getTime(),
+    ),
     lastUpdated: new Date().toISOString(),
     source: `Recurring schedule · 8 clubs${igSource}${stravaSource}`,
   }
