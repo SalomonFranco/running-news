@@ -107,6 +107,17 @@ const SLOTS: RecurringSlot[] = [
     attendeesApprox: 40,
   },
   {
+    club: 'Good Soles Run Club',
+    title: 'Good Soles Run Club · Tuesday Run',
+    meetingPoint: 'Check @goodsolesrunclub on Instagram',
+    days: [2], // Tuesday
+    hour: 19, minute: 30, durationMin: 60,
+    type: 'club-run',
+    accent: 'lavender',
+    signupUrl: 'https://www.instagram.com/goodsolesrunclub/',
+    attendeesApprox: 30,
+  },
+  {
     club: 'Club Rodeo',
     title: 'Club Rodeo · Tuesday 5K',
     meetingPoint: 'Nudes — Carrer del Rec 10',
