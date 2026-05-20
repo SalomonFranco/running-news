@@ -15,6 +15,7 @@ function addDays(d: Date, n: number): Date {
 const BLOCKED_CLUBS = new Set([
   'nike run club barcelona',
   'nike run club',
+  'good soles run club',
 ])
 
 function isBlocked(club: string) {
