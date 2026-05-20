@@ -12,6 +12,15 @@ function addDays(d: Date, n: number): Date {
   return r
 }
 
+const BLOCKED_CLUBS = new Set([
+  'nike run club barcelona',
+  'nike run club',
+])
+
+function isBlocked(club: string) {
+  return BLOCKED_CLUBS.has(club.toLowerCase().trim())
+}
+
 export async function GET() {
   const today = new Date()
   const windowEnd = addDays(today, 6)
@@ -26,7 +35,7 @@ export async function GET() {
     const agenda = await getStravaAgenda()
     stravaEvents = agenda.events.filter((e) => {
       const t = new Date(e.startsAt).getTime()
-      return t > Date.now() && t <= windowEndMs
+      return t > Date.now() && t <= windowEndMs && !isBlocked(e.club)
     })
     stravaSource = stravaEvents.length > 0
       ? ` · ${stravaEvents.length} confirmed on Strava`
@@ -36,7 +45,7 @@ export async function GET() {
   let instagramEvents: RunningEvent[] = []
   let igSource = ''
   try {
-    instagramEvents = await getInstagramEvents()
+    instagramEvents = (await getInstagramEvents()).filter((e) => !isBlocked(e.club))
     igSource = instagramEvents.length > 0
       ? ` · ${instagramEvents.length} from Instagram`
       : ''
