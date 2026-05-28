@@ -4,6 +4,7 @@ import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { ArrowDown, MapPin, Calendar } from '@phosphor-icons/react'
 import { GooeyText } from '@/components/ui/gooey-text-morphing'
+import { MagicTextLines } from '@/components/ui/magic-text'
 
 const container = {
   hidden: {},
@@ -116,9 +117,21 @@ export default function Hero() {
               texts={['Social', 'Running', 'Is', 'Cool']}
               morphTime={1}
               cooldownTime={0.25}
-              className="w-full h-[40vw] max-h-[420px] min-h-[200px]"
+              className="w-full h-[160px] mt-[189px]"
               textClassName="font-display font-bold tracking-[-0.03em] text-rn-ink [font-size:clamp(3.5rem,12vw,11rem)]"
             />
+
+            {/* Scroll-reveal description */}
+            <div className="flex justify-center pt-[76px]">
+              <MagicTextLines
+                lines={[
+                  "The weekly agenda of every running event in your city.",
+                  "Live, curated, free.",
+                  "Find your next run, your next club, your next finish line.",
+                ]}
+                className="text-center max-w-[52ch]"
+              />
+            </div>
           </motion.div>
         </div>
       </motion.div>

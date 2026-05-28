@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Lightning } from '@phosphor-icons/react'
+import Image from 'next/image'
 
 const LINKS = [
   { label: 'Agenda',  href: '#agenda' },
@@ -38,11 +38,15 @@ export default function Navigation() {
           className="flex items-center gap-2 group"
           aria-label="Running News home"
         >
-          <span
-            className="w-7 h-7 rounded-full bg-rn-ink flex items-center justify-center text-rn-base transition-transform duration-200 ease-out group-hover:rotate-[15deg]"
-          >
-            <Lightning size={14} weight="fill" />
-          </span>
+          <Image
+            src="/logo.png"
+            alt="Running News logo"
+            width={28}
+            height={28}
+            style={{ transition: 'transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)' }}
+            onMouseEnter={(e) => (e.currentTarget.style.transform = 'rotate(15deg)')}
+            onMouseLeave={(e) => (e.currentTarget.style.transform = 'rotate(0deg)')}
+          />
           <span className="font-display font-semibold tracking-tight text-rn-ink text-[15px]">
             Running News
           </span>
