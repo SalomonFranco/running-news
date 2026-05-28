@@ -3,6 +3,7 @@
 import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { ArrowDown, MapPin, Calendar } from '@phosphor-icons/react'
+import { GooeyText } from '@/components/ui/gooey-text-morphing'
 
 const container = {
   hidden: {},
@@ -19,19 +20,6 @@ const item = {
   },
 }
 
-const lineReveal = {
-  hidden: { clipPath: 'inset(100% 0% 0% 0%)' },
-  visible: (i: number) => ({
-    clipPath: 'inset(0% 0% 0% 0%)',
-    transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 + i * 0.12 },
-  }),
-}
-
-/**
- * Editorial hero — massive display type, asymmetric, parallax decorative blobs.
- * Inspired by sports-magazine cover layouts (Eliud Kipchoge NN Running covers,
- * The Trail Magazine), brought into pastel-cyberpunk territory.
- */
 export default function Hero() {
   const ref = useRef<HTMLElement>(null)
   const { scrollYProgress } = useScroll({
@@ -123,69 +111,14 @@ export default function Hero() {
               </span>
             </motion.div>
 
-            {/* Display title — clip-path line reveals */}
-            <h1
-              className="font-display font-bold tracking-[-0.03em] text-rn-ink leading-[0.86] mb-8"
-              style={{ fontSize: 'clamp(3.5rem, 12vw, 11rem)' }}
-            >
-              <div className="overflow-hidden">
-                <motion.div custom={0} variants={lineReveal}>
-                  Running
-                </motion.div>
-              </div>
-              <div className="overflow-hidden">
-                <motion.div
-                  custom={1}
-                  variants={lineReveal}
-                  className="text-coral italic font-display"
-                >
-                  News.
-                </motion.div>
-              </div>
-            </h1>
-
-            {/* Description */}
-            <motion.p
-              variants={item}
-              className="text-rn-muted text-lg lg:text-xl max-w-[52ch] leading-[1.55] mb-12"
-            >
-              The weekly agenda of every running event in your city.{' '}
-              <span className="text-rn-ink font-medium">Live, curated, free.</span>{' '}
-              Find your next run, your next club, your next finish line.
-            </motion.p>
-
-            {/* CTAs */}
-            <motion.div variants={item} className="flex flex-wrap items-center gap-3">
-              <a href="#agenda" className="btn btn-primary px-7 py-3.5 text-sm tracking-wide">
-                See this week&apos;s agenda
-                <ArrowDown size={14} weight="bold" data-arrow data-arrow-down />
-              </a>
-
-              <a href="#clubs" className="btn btn-ghost px-7 py-3.5 text-sm tracking-wide">
-                Browse clubs
-              </a>
-            </motion.div>
-
-            {/* Stat row */}
-            <motion.div
-              variants={item}
-              className="mt-20 grid grid-cols-3 max-w-[560px] gap-8"
-            >
-              {[
-                { n: '7',    label: 'days curated' },
-                { n: '12+',  label: 'active clubs' },
-                { n: '1.4k', label: 'runners this week' },
-              ].map((s) => (
-                <div key={s.label}>
-                  <div className="font-display font-semibold text-rn-ink text-3xl lg:text-4xl tabular-nums">
-                    {s.n}
-                  </div>
-                  <div className="text-xs uppercase tracking-[0.18em] text-rn-muted mt-1">
-                    {s.label}
-                  </div>
-                </div>
-              ))}
-            </motion.div>
+            {/* Gooey morphing headline */}
+            <GooeyText
+              texts={['Social', 'Running', 'Is', 'Cool']}
+              morphTime={1}
+              cooldownTime={0.25}
+              className="w-full h-[40vw] max-h-[420px] min-h-[200px]"
+              textClassName="font-display font-bold tracking-[-0.03em] text-rn-ink [font-size:clamp(3.5rem,12vw,11rem)]"
+            />
           </motion.div>
         </div>
       </motion.div>
