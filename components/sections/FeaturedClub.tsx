@@ -83,25 +83,10 @@ export default function FeaturedClub() {
                 href="https://www.midnightrunners.com/barcelona"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2 px-6 py-3 rounded-full bg-coral text-rn-ink text-sm font-medium tracking-wide"
-                style={{
-                  transition:
-                    'background-color 0.2s ease, transform 0.15s cubic-bezier(0.16, 1, 0.3, 1)',
-                }}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.background = 'var(--butter)')
-                }
-                onMouseLeave={(e) => (e.currentTarget.style.background = '')}
-                onMouseDown={(e) => (e.currentTarget.style.transform = 'scale(0.97)')}
-                onMouseUp={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+                className="btn btn-coral px-6 py-3 text-sm tracking-wide"
               >
                 Visit the club
-                <ArrowUpRight
-                  size={14}
-                  weight="bold"
-                  className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                  style={{ transition: 'transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)' }}
-                />
+                <ArrowUpRight size={14} weight="bold" data-arrow data-arrow-up />
               </a>
             </div>
 

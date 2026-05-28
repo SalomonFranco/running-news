@@ -24,7 +24,7 @@ const TRACK = [...ITEMS, ...ITEMS]
 export default function Marquee() {
   return (
     <section
-      className="relative overflow-hidden py-10 lg:py-14 border-y border-rn-line"
+      className="relative overflow-hidden py-10 lg:py-14 border-y border-white/10"
       style={{ background: 'var(--rn-ink)' }}
       aria-hidden="true"
     >

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Unbounded, Manrope } from 'next/font/google'
 import './globals.css'
+import MotionProvider from '@/components/MotionProvider'
 
 const unbounded = Unbounded({
   subsets: ['latin'],
@@ -34,7 +35,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${unbounded.variable} ${manrope.variable}`}>
-      <body className="font-sans">{children}</body>
+      <body className="font-sans">
+        <MotionProvider>{children}</MotionProvider>
+      </body>
     </html>
   )
 }

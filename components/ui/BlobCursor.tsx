@@ -22,8 +22,9 @@ export default function BlobCursor() {
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    // Disable on touch devices
+    // Disable on touch devices and when the user prefers reduced motion
     if (window.matchMedia('(hover: none)').matches) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
     const onMove = (e: MouseEvent) => {
       x.set(e.clientX)

@@ -6,14 +6,14 @@ export default function Footer() {
   return (
     <footer className="relative pt-20 pb-10 border-t border-rn-line">
       <div className="max-w-[1440px] mx-auto px-6 lg:px-12">
-        {/* Massive editorial mark */}
-        <div className="mb-16 overflow-hidden">
-          <h2
+        {/* Massive editorial mark — decorative typographic flourish */}
+        <div className="mb-16 overflow-hidden" aria-hidden="true">
+          <div
             className="font-display font-bold text-rn-ink tracking-[-0.04em] leading-[0.85] select-none"
             style={{ fontSize: 'clamp(4rem, 18vw, 18rem)' }}
           >
             Run. <span className="italic text-coral">Run.</span> Run.
-          </h2>
+          </div>
         </div>
 
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">

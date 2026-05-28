@@ -47,7 +47,7 @@ export default function LiveTicker({ events }: Props) {
       initial={{ y: -32, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
-      className="fixed top-5 left-1/2 -translate-x-1/2 z-50"
+      className="hidden sm:block fixed top-5 left-1/2 -translate-x-1/2 z-50"
     >
       <motion.div
         key={tick}

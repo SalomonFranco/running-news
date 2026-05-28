@@ -156,45 +156,12 @@ export default function Hero() {
 
             {/* CTAs */}
             <motion.div variants={item} className="flex flex-wrap items-center gap-3">
-              <a
-                href="#agenda"
-                className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-rn-ink text-rn-base text-sm font-medium tracking-wide"
-                style={{
-                  transition:
-                    'background-color 0.2s ease, transform 0.15s cubic-bezier(0.16, 1, 0.3, 1)',
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--coral)')}
-                onMouseLeave={(e) => (e.currentTarget.style.background = '')}
-                onMouseDown={(e) => (e.currentTarget.style.transform = 'scale(0.97)')}
-                onMouseUp={(e) => (e.currentTarget.style.transform = 'scale(1)')}
-              >
-                See this week's agenda
-                <ArrowDown
-                  size={14}
-                  weight="bold"
-                  style={{ transition: 'transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)' }}
-                  className="group-hover:translate-y-0.5"
-                />
+              <a href="#agenda" className="btn btn-primary px-7 py-3.5 text-sm tracking-wide">
+                See this week&apos;s agenda
+                <ArrowDown size={14} weight="bold" data-arrow data-arrow-down />
               </a>
 
-              <a
-                href="#clubs"
-                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border border-rn-ink/15 text-rn-ink text-sm font-medium tracking-wide bg-white/60 backdrop-blur"
-                style={{
-                  transition:
-                    'border-color 0.2s ease, background-color 0.2s ease, transform 0.15s cubic-bezier(0.16, 1, 0.3, 1)',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = 'var(--rn-ink)'
-                  e.currentTarget.style.background = 'white'
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = ''
-                  e.currentTarget.style.background = ''
-                }}
-                onMouseDown={(e) => (e.currentTarget.style.transform = 'scale(0.97)')}
-                onMouseUp={(e) => (e.currentTarget.style.transform = 'scale(1)')}
-              >
+              <a href="#clubs" className="btn btn-ghost px-7 py-3.5 text-sm tracking-wide">
                 Browse clubs
               </a>
             </motion.div>

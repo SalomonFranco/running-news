@@ -24,7 +24,7 @@ export default function Navigation() {
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-      className={`fixed top-16 left-0 right-0 z-40 ${
+      className={`fixed top-5 sm:top-16 left-0 right-0 z-40 ${
         scrolled
           ? 'bg-rn-base/70 backdrop-blur-lg border-b border-rn-line'
           : 'bg-transparent'
@@ -39,10 +39,7 @@ export default function Navigation() {
           aria-label="Running News home"
         >
           <span
-            className="w-7 h-7 rounded-full bg-rn-ink flex items-center justify-center text-rn-base"
-            style={{ transition: 'transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)' }}
-            onMouseEnter={(e) => (e.currentTarget.style.transform = 'rotate(15deg)')}
-            onMouseLeave={(e) => (e.currentTarget.style.transform = 'rotate(0deg)')}
+            className="w-7 h-7 rounded-full bg-rn-ink flex items-center justify-center text-rn-base transition-transform duration-200 ease-out group-hover:rotate-[15deg]"
           >
             <Lightning size={14} weight="fill" />
           </span>
@@ -57,10 +54,7 @@ export default function Navigation() {
             <a
               key={link.label}
               href={link.href}
-              className="text-sm font-medium tracking-wide text-rn-muted kinetic-link"
-              style={{ transition: 'color 0.15s ease' }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--rn-ink)')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = '')}
+              className="text-sm font-medium tracking-wide text-rn-muted kinetic-link transition-colors duration-150 hover:text-rn-ink"
             >
               {link.label}
             </a>
@@ -70,14 +64,7 @@ export default function Navigation() {
         {/* CTA */}
         <a
           href="#agenda"
-          className="px-4 py-2 rounded-full bg-rn-ink text-rn-base text-[13px] font-medium tracking-wide"
-          style={{
-            transition: 'background-color 0.2s ease, transform 0.15s cubic-bezier(0.16, 1, 0.3, 1)',
-          }}
-          onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--coral)')}
-          onMouseLeave={(e) => (e.currentTarget.style.background = '')}
-          onMouseDown={(e) => (e.currentTarget.style.transform = 'scale(0.95)')}
-          onMouseUp={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+          className="btn btn-primary px-4 py-2 text-[13px] tracking-wide"
         >
           See this week
         </a>

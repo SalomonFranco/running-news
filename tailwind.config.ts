@@ -16,11 +16,11 @@ const config: Config = {
         /* Sophisticated pastels — anti-saccharine. Warm cream base. */
         rn: {
           base:      '#FAF7F2',  // warm cream background
-          surface:   '#FFFFFF',  // elevated white
+          surface:   '#FFFDFA',  // elevated surface — warm-tinted, never pure white
           ink:       '#0E0E14',  // near-black with hint of blue
           smoke:     '#1E1E26',  // dark surface for contrast blocks
-          muted:     '#73707A',  // body text muted
-          faint:     '#B5B0B3',  // captions / borders
+          muted:     '#716E6A',  // body text muted — warm neutral
+          faint:     '#B6B0A8',  // captions / borders — warm faint
           line:      'rgba(14,14,20,0.08)',
         },
         coral:     '#FF8B7A',  // pastel coral — primary accent
