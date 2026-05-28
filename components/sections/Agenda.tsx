@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import { ArrowsClockwise } from '@phosphor-icons/react'
 import EventCard from '@/components/ui/EventCard'
 import type { WeeklyAgenda } from '@/lib/types'
-import { fmtDay, fmtDateLong, groupByDay } from '@/lib/utils'
+import { fmtDay, fmtDateLong, fmtTime, groupByDay } from '@/lib/utils'
 
 const SkeletonCard = () => (
   <div className="rounded-3xl h-[280px] bg-rn-ink/[0.04] relative overflow-hidden">
@@ -86,11 +86,13 @@ export default function Agenda() {
 
           <div className="lg:text-right text-sm text-rn-muted leading-relaxed max-w-[340px]">
             <p>
-              {data?.source ?? 'Loading…'}
+              {data?.source ?? 'Curating this week…'}
             </p>
             <p className="text-rn-faint text-xs mt-2 flex items-center lg:justify-end gap-1.5">
               <ArrowsClockwise size={11} weight="bold" />
-              {data?.source ?? 'Loading source...'}
+              {data
+                ? `Updated ${fmtTime(data.lastUpdated)} · refreshes every 10 min`
+                : 'Checking for updates…'}
             </p>
           </div>
         </motion.header>

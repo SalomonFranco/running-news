@@ -5,11 +5,11 @@
 @layer base {
   :root {
     --rn-base:     #FAF7F2;
-    --rn-surface:  #FFFFFF;
+    --rn-surface:  #FFFDFA;  /* warm-tinted white, never pure #fff */
     --rn-ink:      #0E0E14;
     --rn-smoke:    #1E1E26;
-    --rn-muted:    #73707A;
-    --rn-faint:    #B5B0B3;
+    --rn-muted:    #716E6A;  /* warm neutral, tinted toward the cream base */
+    --rn-faint:    #B6B0A8;  /* warm faint for captions / borders */
 
     --coral:    #FF8B7A;
     --mint:     #A8DBC5;
@@ -43,6 +43,17 @@
     color: var(--rn-ink);
   }
 
+  /* Keyboard focus — visible, brand-tinted, works on light + dark surfaces */
+  :focus-visible {
+    outline: 2.5px solid var(--coral);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  /* Mouse users don't get the ring; pointer interactions have their own feedback */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
   ::-webkit-scrollbar { width: 6px; height: 6px; }
   ::-webkit-scrollbar-track { background: var(--rn-base); }
   ::-webkit-scrollbar-thumb {
@@ -55,9 +66,53 @@
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
       animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
     }
   }
+}
+
+@layer components {
+  /* ─── Reusable pill buttons ───────────────────────────────────────────
+     Replaces scattered inline onMouseEnter/Leave/Down/Up handlers.
+     CSS :hover/:active give mouse + keyboard parity; focus ring handles
+     keyboard visibility. */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 9999px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease,
+      border-color 0.2s ease,
+      transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn:active { transform: scale(0.97); }
+
+  .btn-primary { background: var(--rn-ink); color: var(--rn-base); }
+  .btn-primary:hover { background: var(--coral); color: var(--rn-ink); }
+
+  .btn-ghost {
+    border: 1px solid rgba(14, 14, 20, 0.15);
+    color: var(--rn-ink);
+    background: rgba(255, 253, 250, 0.6);
+    backdrop-filter: blur(8px);
+  }
+  .btn-ghost:hover { border-color: var(--rn-ink); background: var(--rn-surface); }
+
+  .btn-coral { background: var(--coral); color: var(--rn-ink); }
+  .btn-coral:hover { background: var(--butter); }
+
+  /* Arrow nudge on hover for buttons that contain a [data-arrow] icon */
+  .btn [data-arrow] {
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn:hover [data-arrow-down] { transform: translateY(2px); }
+  .btn:hover [data-arrow-up]   { transform: translate(2px, -2px); }
 }
 
 @layer utilities {

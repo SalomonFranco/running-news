@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef } from 'react'
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
+import { motion, useMotionValue, useSpring, useTransform, useReducedMotion } from 'framer-motion'
 import { ArrowUpRight, Clock, MapPin, Users, Lightning } from '@phosphor-icons/react'
 import type { RunningEvent, EventAccent } from '@/lib/types'
 import { fmtTime } from '@/lib/utils'
@@ -38,8 +38,8 @@ const TYPE_LABEL: Record<RunningEvent['type'], string> = {
 }
 
 export default function EventCard({ event, index }: Props) {
-  const ref = useRef<HTMLDivElement>(null)
-  const { signupUrl } = event
+  const ref = useRef<HTMLAnchorElement>(null)
+  const reduceMotion = useReducedMotion()
 
   // Raw mouse position relative to card (-0.5 .. 0.5)
   const mx = useMotionValue(0)
@@ -57,7 +57,8 @@ export default function EventCard({ event, index }: Props) {
   const glareX = useTransform(smx, [-0.5, 0.5], ['0%', '100%'])
   const glareY = useTransform(smy, [-0.5, 0.5], ['0%', '100%'])
 
-  const handleMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (reduceMotion) return
     const rect = ref.current?.getBoundingClientRect()
     if (!rect) return
     mx.set((e.clientX - rect.left) / rect.width - 0.5)
@@ -69,7 +70,12 @@ export default function EventCard({ event, index }: Props) {
     my.set(0)
   }
 
-  const card = (
+  // Only treat as a navigable link when there's a real destination.
+  const href =
+    event.signupUrl && event.signupUrl !== '#' ? event.signupUrl : undefined
+  const isExternal = href?.startsWith('http')
+
+  return (
     <motion.div
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -81,8 +87,12 @@ export default function EventCard({ event, index }: Props) {
       }}
       style={{ perspective: 1200 }}
     >
-      <motion.article
+      <motion.a
         ref={ref}
+        href={href}
+        target={isExternal ? '_blank' : undefined}
+        rel={isExternal ? 'noopener noreferrer' : undefined}
+        aria-label={`${event.title} — ${event.club}${href ? ', view details' : ''}`}
         onMouseMove={handleMove}
         onMouseLeave={handleLeave}
         onMouseDown={(e) => (e.currentTarget.style.scale = '0.985')}
@@ -95,7 +105,9 @@ export default function EventCard({ event, index }: Props) {
           background: ACCENT_BG[event.accent],
           transition: 'scale 0.15s cubic-bezier(0.16, 1, 0.3, 1)',
         }}
-        className="relative rounded-3xl p-7 lg:p-8 cursor-pointer overflow-hidden grain h-full min-h-[280px] flex flex-col"
+        className={`relative block rounded-3xl p-7 lg:p-8 overflow-hidden grain h-full min-h-[280px] flex flex-col ${
+          href ? 'cursor-pointer' : ''
+        }`}
       >
         {/* Spec-light reflection — parallax highlight following cursor */}
         <motion.div
@@ -152,16 +164,14 @@ export default function EventCard({ event, index }: Props) {
             )}
           </div>
 
-          {/* CTA arrow — only when there's a destination */}
-          {signupUrl && (
-            <motion.span
-              className="w-9 h-9 rounded-full bg-rn-ink text-rn-base flex items-center justify-center flex-shrink-0"
-              whileHover={{ rotate: 45 }}
-              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <ArrowUpRight size={14} weight="bold" />
-            </motion.span>
-          )}
+          {/* CTA arrow */}
+          <motion.span
+            className="w-9 h-9 rounded-full bg-rn-ink text-rn-base flex items-center justify-center flex-shrink-0"
+            whileHover={{ rotate: 45 }}
+            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <ArrowUpRight size={14} weight="bold" />
+          </motion.span>
         </footer>
 
         {/* Distance/pace badge — bottom-left of card */}
@@ -172,21 +182,7 @@ export default function EventCard({ event, index }: Props) {
             </div>
           </div>
         )}
-      </motion.article>
+      </motion.a>
     </motion.div>
-  )
-
-  if (!signupUrl) return card
-
-  return (
-    <a
-      href={signupUrl}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="block"
-      aria-label={`View event: ${event.title}`}
-    >
-      {card}
-    </a>
   )
 }

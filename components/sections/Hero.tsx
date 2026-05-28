@@ -3,6 +3,8 @@
 import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { ArrowDown, MapPin, Calendar } from '@phosphor-icons/react'
+import { GooeyText } from '@/components/ui/gooey-text-morphing'
+import { MagicTextLines } from '@/components/ui/magic-text'
 
 const container = {
   hidden: {},
@@ -19,19 +21,6 @@ const item = {
   },
 }
 
-const lineReveal = {
-  hidden: { clipPath: 'inset(100% 0% 0% 0%)' },
-  visible: (i: number) => ({
-    clipPath: 'inset(0% 0% 0% 0%)',
-    transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 + i * 0.12 },
-  }),
-}
-
-/**
- * Editorial hero — massive display type, asymmetric, parallax decorative blobs.
- * Inspired by sports-magazine cover layouts (Eliud Kipchoge NN Running covers,
- * The Trail Magazine), brought into pastel-cyberpunk territory.
- */
 export default function Hero() {
   const ref = useRef<HTMLElement>(null)
   const { scrollYProgress } = useScroll({
@@ -53,7 +42,7 @@ export default function Hero() {
       {/* Decorative pastel blobs — parallax */}
       <motion.div
         style={{ y: blob1Y }}
-        className="absolute -top-40 -right-32 w-[min(640px,80vw)] h-[min(640px,80vw)] rounded-full pointer-events-none"
+        className="absolute -top-40 -right-32 w-[640px] h-[640px] rounded-full pointer-events-none"
         aria-hidden="true"
       >
         <div
@@ -67,7 +56,7 @@ export default function Hero() {
       </motion.div>
       <motion.div
         style={{ y: blob2Y }}
-        className="absolute top-1/2 -left-40 w-[min(520px,70vw)] h-[min(520px,70vw)] rounded-full pointer-events-none"
+        className="absolute top-1/2 -left-40 w-[520px] h-[520px] rounded-full pointer-events-none"
         aria-hidden="true"
       >
         <div
@@ -81,7 +70,7 @@ export default function Hero() {
       </motion.div>
       <motion.div
         style={{ y: blob2Y }}
-        className="absolute bottom-0 right-1/4 w-[min(380px,60vw)] h-[min(380px,60vw)] rounded-full pointer-events-none"
+        className="absolute bottom-0 right-1/4 w-[380px] h-[380px] rounded-full pointer-events-none"
         aria-hidden="true"
       >
         <div
@@ -97,7 +86,7 @@ export default function Hero() {
       {/* Content */}
       <motion.div
         style={{ y: titleY, opacity: titleOpacity }}
-        className="relative z-10 min-h-[100dvh] flex flex-col justify-start sm:justify-center pt-[136px] sm:pt-32 pb-10 sm:pb-20"
+        className="relative z-10 min-h-[100dvh] flex flex-col justify-center pt-32 pb-20"
       >
         <div className="max-w-[1440px] w-full mx-auto px-6 lg:px-12">
           <motion.div
@@ -108,7 +97,7 @@ export default function Hero() {
             {/* Eyebrow */}
             <motion.div
               variants={item}
-              className="flex items-center gap-4 mb-6 sm:mb-10"
+              className="flex items-center gap-4 mb-10"
             >
               <span className="flex items-center gap-2 text-xs tracking-[0.22em] uppercase font-medium text-rn-ink">
                 <Calendar size={14} weight="bold" />
@@ -123,102 +112,26 @@ export default function Hero() {
               </span>
             </motion.div>
 
-            {/* Display title — clip-path line reveals */}
-            <h1
-              className="font-display font-bold tracking-[-0.03em] text-rn-ink leading-[0.86] mb-4 sm:mb-8"
-              style={{ fontSize: 'clamp(3.5rem, 12vw, 11rem)' }}
-            >
-              <div className="overflow-hidden">
-                <motion.div custom={0} variants={lineReveal}>
-                  Running
-                </motion.div>
-              </div>
-              <div className="overflow-hidden">
-                <motion.div
-                  custom={1}
-                  variants={lineReveal}
-                  className="text-coral italic font-display"
-                >
-                  News.
-                </motion.div>
-              </div>
-            </h1>
+            {/* Gooey morphing headline */}
+            <GooeyText
+              texts={['Social', 'Running', 'Is', 'Cool']}
+              morphTime={1}
+              cooldownTime={0.25}
+              className="w-full h-[160px] mt-[189px]"
+              textClassName="font-display font-bold tracking-[-0.03em] text-rn-ink [font-size:clamp(3.5rem,12vw,11rem)]"
+            />
 
-            {/* Description */}
-            <motion.p
-              variants={item}
-              className="text-rn-muted text-lg lg:text-xl max-w-[52ch] leading-[1.55] mb-8 sm:mb-12"
-            >
-              The weekly agenda of every running event in your city.{' '}
-              <span className="text-rn-ink font-medium">Live, curated, free.</span>{' '}
-              Find your next run, your next club, your next finish line.
-            </motion.p>
-
-            {/* CTAs */}
-            <motion.div variants={item} className="flex flex-wrap items-center gap-3">
-              <a
-                href="#agenda"
-                className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-rn-ink text-rn-base text-sm font-medium tracking-wide"
-                style={{
-                  transition:
-                    'background-color 0.2s ease, transform 0.15s cubic-bezier(0.16, 1, 0.3, 1)',
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--coral)')}
-                onMouseLeave={(e) => (e.currentTarget.style.background = '')}
-                onMouseDown={(e) => (e.currentTarget.style.transform = 'scale(0.97)')}
-                onMouseUp={(e) => (e.currentTarget.style.transform = 'scale(1)')}
-              >
-                See this week's agenda
-                <ArrowDown
-                  size={14}
-                  weight="bold"
-                  style={{ transition: 'transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)' }}
-                  className="group-hover:translate-y-0.5"
-                />
-              </a>
-
-              <a
-                href="#clubs"
-                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border border-rn-ink/15 text-rn-ink text-sm font-medium tracking-wide bg-white/60 backdrop-blur"
-                style={{
-                  transition:
-                    'border-color 0.2s ease, background-color 0.2s ease, transform 0.15s cubic-bezier(0.16, 1, 0.3, 1)',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = 'var(--rn-ink)'
-                  e.currentTarget.style.background = 'white'
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = ''
-                  e.currentTarget.style.background = ''
-                }}
-                onMouseDown={(e) => (e.currentTarget.style.transform = 'scale(0.97)')}
-                onMouseUp={(e) => (e.currentTarget.style.transform = 'scale(1)')}
-              >
-                Browse clubs
-              </a>
-            </motion.div>
-
-            {/* Stat row */}
-            <motion.div
-              variants={item}
-              className="mt-10 sm:mt-20 grid grid-cols-1 sm:grid-cols-3 max-w-[560px] gap-4 sm:gap-8"
-            >
-              {[
-                { n: '7',    label: 'days curated' },
-                { n: '12+',  label: 'active clubs' },
-                { n: '1.4k', label: 'runners this week' },
-              ].map((s) => (
-                <div key={s.label}>
-                  <div className="font-display font-semibold text-rn-ink text-3xl lg:text-4xl tabular-nums">
-                    {s.n}
-                  </div>
-                  <div className="text-xs uppercase tracking-[0.18em] text-rn-muted mt-1">
-                    {s.label}
-                  </div>
-                </div>
-              ))}
-            </motion.div>
+            {/* Scroll-reveal description */}
+            <div className="flex justify-center pt-[76px]">
+              <MagicTextLines
+                lines={[
+                  "The weekly agenda of every running event in your city.",
+                  "Live, curated, free.",
+                  "Find your next run, your next club, your next finish line.",
+                ]}
+                className="text-center max-w-[52ch]"
+              />
+            </div>
           </motion.div>
         </div>
       </motion.div>
