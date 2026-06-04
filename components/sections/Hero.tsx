@@ -83,9 +83,9 @@ export default function Hero() {
         />
       </motion.div>
 
-      {/* Content */}
+      {/* Content — titleY parallax on whole block, titleOpacity only on headline */}
       <motion.div
-        style={{ y: titleY, opacity: titleOpacity }}
+        style={{ y: titleY }}
         className="relative z-10 min-h-[100dvh] flex flex-col justify-center pt-32 pb-20"
       >
         <div className="max-w-[1440px] w-full mx-auto px-6 lg:px-12">
@@ -94,34 +94,37 @@ export default function Hero() {
             initial="hidden"
             animate="visible"
           >
-            {/* Eyebrow */}
-            <motion.div
-              variants={item}
-              className="flex items-center gap-4 mb-10"
-            >
-              <span className="flex items-center gap-2 text-xs tracking-[0.22em] uppercase font-medium text-rn-ink">
-                <Calendar size={14} weight="bold" />
-                {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-                {' → '}
-                {new Date(Date.now() + 6 * 86400000).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-              </span>
-              <div className="w-12 h-px bg-rn-ink" />
-              <span className="flex items-center gap-2 text-xs tracking-[0.22em] uppercase font-medium text-rn-muted">
-                <MapPin size={14} weight="bold" />
-                Barcelona
-              </span>
+            {/* Eyebrow + Gooey headline — fade out as you scroll past */}
+            <motion.div style={{ opacity: titleOpacity }}>
+              {/* Eyebrow */}
+              <motion.div
+                variants={item}
+                className="flex items-center gap-4 mb-10"
+              >
+                <span className="flex items-center gap-2 text-xs tracking-[0.22em] uppercase font-medium text-rn-ink">
+                  <Calendar size={14} weight="bold" />
+                  {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                  {' → '}
+                  {new Date(Date.now() + 6 * 86400000).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                </span>
+                <div className="w-12 h-px bg-rn-ink" />
+                <span className="flex items-center gap-2 text-xs tracking-[0.22em] uppercase font-medium text-rn-muted">
+                  <MapPin size={14} weight="bold" />
+                  Barcelona
+                </span>
+              </motion.div>
+
+              {/* Gooey morphing headline */}
+              <GooeyText
+                texts={['Social', 'Running', 'Is', 'Cool']}
+                morphTime={1}
+                cooldownTime={0.25}
+                className="w-full h-[160px] mt-[189px]"
+                textClassName="font-display font-bold tracking-[-0.03em] text-rn-ink [font-size:clamp(3.5rem,12vw,11rem)]"
+              />
             </motion.div>
 
-            {/* Gooey morphing headline */}
-            <GooeyText
-              texts={['Social', 'Running', 'Is', 'Cool']}
-              morphTime={1}
-              cooldownTime={0.25}
-              className="w-full h-[160px] mt-[189px]"
-              textClassName="font-display font-bold tracking-[-0.03em] text-rn-ink [font-size:clamp(3.5rem,12vw,11rem)]"
-            />
-
-            {/* Stats row */}
+            {/* Stats — stays visible once rendered */}
             <motion.div
               variants={item}
               className="flex items-start justify-center gap-8 sm:gap-16 lg:gap-24 pt-16"
@@ -145,7 +148,7 @@ export default function Hero() {
               ))}
             </motion.div>
 
-            {/* Scroll-reveal description */}
+            {/* Scroll-reveal description — words lock at full opacity once revealed */}
             <div className="flex justify-center pt-[96px]">
               <MagicTextLines
                 lines={[
@@ -153,6 +156,7 @@ export default function Hero() {
                   "Live, curated, free.",
                   "Find your next run, your next club, your next finish line.",
                 ]}
+                wordClassNames={{ curated: 'text-coral' }}
                 className="text-center max-w-[52ch]"
               />
             </div>
