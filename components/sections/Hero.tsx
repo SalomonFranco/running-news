@@ -121,8 +121,32 @@ export default function Hero() {
               textClassName="font-display font-bold tracking-[-0.03em] text-rn-ink [font-size:clamp(3.5rem,12vw,11rem)]"
             />
 
+            {/* Stats row */}
+            <motion.div
+              variants={item}
+              className="flex items-start justify-center gap-16 lg:gap-24 pt-16"
+            >
+              {[
+                { value: '7',    label: 'Days Curated' },
+                { value: '12+',  label: 'Active Clubs' },
+                { value: '1.4k', label: 'Runners This Week' },
+              ].map(({ value, label }) => (
+                <div key={label} className="flex flex-col items-center gap-1 text-center">
+                  <span
+                    className="font-display font-bold text-rn-ink tabular-nums leading-none"
+                    style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)' }}
+                  >
+                    {value}
+                  </span>
+                  <span className="text-[10px] uppercase tracking-[0.22em] font-medium text-rn-muted">
+                    {label}
+                  </span>
+                </div>
+              ))}
+            </motion.div>
+
             {/* Scroll-reveal description */}
-            <div className="flex justify-center pt-[76px]">
+            <div className="flex justify-center pt-[96px]">
               <MagicTextLines
                 lines={[
                   "The weekly agenda of every running event in your city.",
