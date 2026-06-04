@@ -24,7 +24,7 @@ export default function Navigation() {
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-      className={`fixed top-5 sm:top-16 left-0 right-0 z-40 ${
+      className={`fixed top-16 left-0 right-0 z-40 ${
         scrolled
           ? 'bg-rn-base/70 backdrop-blur-lg border-b border-rn-line'
           : 'bg-transparent'

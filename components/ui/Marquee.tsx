@@ -4,15 +4,15 @@ import { Asterisk } from '@phosphor-icons/react'
 
 const ITEMS = [
   'Barcelona',
-  'Madrid',
-  'Lisbon',
-  'Paris',
-  'Berlin',
-  'London',
-  'Amsterdam',
-  'Stockholm',
-  'Copenhagen',
-  'Rome',
+  'Barcelona',
+  'Barcelona',
+  'Barcelona',
+  'Barcelona',
+  'Barcelona',
+  'Barcelona',
+  'Barcelona',
+  'Barcelona',
+  'Barcelona',
 ]
 
 const TRACK = [...ITEMS, ...ITEMS]

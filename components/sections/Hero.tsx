@@ -124,7 +124,7 @@ export default function Hero() {
             {/* Stats row */}
             <motion.div
               variants={item}
-              className="flex items-start justify-center gap-16 lg:gap-24 pt-16"
+              className="flex items-start justify-center gap-8 sm:gap-16 lg:gap-24 pt-16"
             >
               {[
                 { value: '7',    label: 'Days Curated' },
@@ -134,7 +134,7 @@ export default function Hero() {
                 <div key={label} className="flex flex-col items-center gap-1 text-center">
                   <span
                     className="font-display font-bold text-rn-ink tabular-nums leading-none"
-                    style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)' }}
+                    style={{ fontSize: 'clamp(1.5rem, 4vw, 4rem)' }}
                   >
                     {value}
                   </span>
