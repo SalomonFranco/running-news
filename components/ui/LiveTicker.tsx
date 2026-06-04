@@ -30,24 +30,26 @@ export default function LiveTicker({ events }: Props) {
   const [tick, setTick] = useState(0)
 
   useEffect(() => {
-    if (events.length === 0) return
+    if (upcomingEvents.length === 0) return
     const t = setInterval(() => {
-      setIdx((i) => (i + 1) % events.length)
+      setIdx((i) => (i + 1) % upcomingEvents.length)
       setTick((x) => x + 1)
     }, 5000)
     return () => clearInterval(t)
   }, [events.length])
 
-  if (!events.length) return null
-  const e = events[idx]
-  const isFuture = new Date(e.startsAt).getTime() > Date.now()
+  const upcomingEvents = events.filter(
+    (e) => new Date(e.startsAt).getTime() > Date.now()
+  )
+  if (!upcomingEvents.length) return null
+  const e = upcomingEvents[idx % upcomingEvents.length]
 
   return (
     <motion.div
       initial={{ y: -32, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
-      className="fixed top-5 left-4 sm:left-1/2 sm:-translate-x-1/2 z-50 w-[calc(100vw-2rem)] sm:w-[480px]"
+      className="fixed top-5 inset-x-0 mx-auto z-50 w-[calc(100vw-2rem)] sm:w-fit"
     >
       <motion.div
         key={tick}
@@ -62,7 +64,7 @@ export default function LiveTicker({ events }: Props) {
           <span className="relative inline-flex h-2 w-2 rounded-full bg-mint" />
         </span>
         <span className="tracking-[0.18em] uppercase font-medium text-mint">
-          {isFuture ? 'Upcoming' : 'Recent'}
+          Upcoming
         </span>
         <span className="w-px h-3 bg-white/20" />
         <span className="font-medium truncate flex-1 min-w-0">{e.title}</span>

@@ -99,7 +99,7 @@ export default function Hero() {
               {/* Eyebrow */}
               <motion.div
                 variants={item}
-                className="flex items-center gap-4 mb-10"
+                className="flex items-center justify-center gap-4 mb-10"
               >
                 <span className="flex items-center gap-2 text-xs tracking-[0.22em] uppercase font-medium text-rn-ink">
                   <Calendar size={14} weight="bold" />
