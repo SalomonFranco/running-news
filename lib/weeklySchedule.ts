@@ -316,168 +316,6 @@ const SLOTS: RecurringSlot[] = [
     signupUrl: 'https://www.instagram.com/sunriserunnersclub/',
     attendeesApprox: 20,
   },
-  {
-    club: 'BCN Digital Nomads',
-    title: 'BCN Digital Nomads · Monday 5K',
-    meetingPoint: 'La Carioca',
-    days: [1],
-    hour: 19, minute: 0, durationMin: 40,
-    distance: '5K',
-    type: 'social',
-    accent: 'coral',
-    signupUrl: 'https://www.instagram.com/bcndigitalnomads/',
-    attendeesApprox: 25,
-  },
-  // Tuesday
-  {
-    club: 'Cabrona de Barri',
-    title: 'Cabrona de Barri · Tuesday 6K',
-    meetingPoint: 'Almogàvers 60',
-    days: [2],
-    hour: 19, minute: 45, durationMin: 50,
-    distance: '6K',
-    type: 'social',
-    accent: 'peach',
-    signupUrl: 'https://www.instagram.com/cabronabarri/',
-    attendeesApprox: 35,
-  },
-  {
-    club: 'The Edge Mood',
-    title: 'The Edge Mood · Tuesday Run',
-    meetingPoint: 'Sagués 16',
-    days: [2],
-    hour: 19, minute: 30, durationMin: 55,
-    distance: '6K–7K',
-    type: 'social',
-    accent: 'butter',
-    signupUrl: 'https://www.instagram.com/theedgemood/',
-    attendeesApprox: 30,
-  },
-  {
-    club: 'Primetime Run',
-    title: 'Primetime Run · Late Night 6K',
-    meetingPoint: 'Francesc Macià',
-    days: [2],
-    hour: 20, minute: 30, durationMin: 50,
-    distance: '6K',
-    type: 'social',
-    accent: 'lavender',
-    signupUrl: 'https://www.instagram.com/primetimerun/',
-    attendeesApprox: 25,
-  },
-  // Wednesday
-  {
-    club: 'Fun Runners',
-    title: 'Fun Runners · Wednesday 10K',
-    meetingPoint: 'Pg. Marítim del Bogatell 115',
-    days: [3],
-    hour: 19, minute: 30, durationMin: 70,
-    distance: '10K',
-    type: 'club-run',
-    accent: 'coral',
-    signupUrl: 'https://www.instagram.com/funrunners/',
-    attendeesApprox: 40,
-  },
-  {
-    club: 'Half Runners',
-    title: 'Half Runners · Wednesday Half Run',
-    meetingPoint: 'Passeig Picasso 14',
-    days: [3],
-    hour: 19, minute: 30, durationMin: 65,
-    distance: '7K–10K',
-    type: 'club-run',
-    accent: 'mint',
-    signupUrl: 'https://www.instagram.com/halfrunners/',
-    attendeesApprox: 35,
-  },
-  // Thursday
-  {
-    club: 'Gravity Run',
-    title: 'Gravity Run · Thursday 7.5K',
-    meetingPoint: 'Check @gravityrun on Instagram',
-    days: [4],
-    hour: 19, minute: 30, durationMin: 55,
-    distance: '7.5K',
-    type: 'club-run',
-    accent: 'lavender',
-    signupUrl: 'https://www.instagram.com/gravityrun/',
-    attendeesApprox: 25,
-  },
-  // Friday
-  {
-    club: 'Las Pasteles Run',
-    title: 'Las Pasteles Run · Friday 5K',
-    meetingPoint: 'Arc de Triomf',
-    days: [5],
-    hour: 9, minute: 25, durationMin: 40,
-    distance: '5K',
-    type: 'social',
-    accent: 'peach',
-    signupUrl: 'https://www.instagram.com/laspastelasrun/',
-    attendeesApprox: 40,
-  },
-  // Saturday
-  {
-    club: 'Culitos Inquietos',
-    title: 'Culitos Inquietos · Saturday 6K',
-    meetingPoint: 'Mystika Centro Holístico',
-    days: [6],
-    hour: 9, minute: 0, durationMin: 50,
-    distance: '6K',
-    type: 'club-run',
-    accent: 'butter',
-    signupUrl: 'https://www.instagram.com/culitosinquietos/',
-    attendeesApprox: 30,
-  },
-  {
-    club: 'Founders Running Club',
-    title: 'Founders Running Club · Saturday Run',
-    meetingPoint: "c/ de l'Escar, 18",
-    days: [6],
-    hour: 9, minute: 0, durationMin: 60,
-    distance: '5K–10K',
-    type: 'club-run',
-    accent: 'coral',
-    signupUrl: 'https://www.instagram.com/foundersrunningclub/',
-    attendeesApprox: 50,
-  },
-  {
-    club: 'Galactic Run',
-    title: 'Galactic Run · Saturday 6–12K',
-    meetingPoint: 'Princesa 28',
-    days: [6],
-    hour: 9, minute: 0, durationMin: 70,
-    distance: '6K–12K',
-    type: 'club-run',
-    accent: 'mint',
-    signupUrl: 'https://www.instagram.com/galacticrun/',
-    attendeesApprox: 45,
-  },
-  {
-    club: 'Saturnday Run Club',
-    title: 'Saturnday Run Club · Saturday 6K',
-    meetingPoint: 'Enric Granados 98',
-    days: [6],
-    hour: 10, minute: 0, durationMin: 50,
-    distance: '6K',
-    type: 'social',
-    accent: 'lavender',
-    signupUrl: 'https://www.instagram.com/saturdayrunclub/',
-    attendeesApprox: 35,
-  },
-  // Sunday
-  {
-    club: 'Sunrise Runners Club',
-    title: 'Sunrise Runners Club · Sunday Run',
-    meetingPoint: 'Plaça del Mar 1',
-    days: [0],
-    hour: 7, minute: 30, durationMin: 60,
-    distance: '5K–10K',
-    type: 'club-run',
-    accent: 'peach',
-    signupUrl: 'https://www.instagram.com/sunriserunnersclub/',
-    attendeesApprox: 20,
-  },
 ]
 
 // Returns Europe/Madrid UTC offset in hours for a given date (+1 CET / +2 CEST).
@@ -515,6 +353,7 @@ export function getWeeklySchedule(): RunningEvent[] {
   todayMadrid.setHours(0, 0, 0, 0)
 
   const events: RunningEvent[] = []
+  const seen = new Set<string>()
 
   for (let dayOffset = 0; dayOffset < 7; dayOffset++) {
     // Build the calendar day for this offset (UTC midnight, safe for date math)
@@ -534,6 +373,11 @@ export function getWeeklySchedule(): RunningEvent[] {
 
       // On the first day (today) skip events that have already started
       if (dayOffset === 0 && eventTime.getTime() < now.getTime()) continue
+
+      // Deduplication guard — silently drops any accidental duplicate SLOT entries
+      const dedupKey = `${slot.club}-${dayOfWeek}-${slot.hour}-${slot.minute}`
+      if (seen.has(dedupKey)) continue
+      seen.add(dedupKey)
 
       events.push({
         id: `schedule-${slot.club.replace(/\s+/g, '-').toLowerCase()}-${calDay.toISOString().slice(0, 10)}`,
