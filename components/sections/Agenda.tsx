@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowsClockwise } from '@phosphor-icons/react'
 import EventCard from '@/components/ui/EventCard'
 import type { WeeklyAgenda } from '@/lib/types'
 import { fmtDay, fmtDateLong, fmtTime, groupByDay } from '@/lib/utils'
@@ -78,23 +77,12 @@ export default function Agenda() {
               className="font-display font-bold text-rn-ink tracking-[-0.025em] leading-[0.95]"
               style={{ fontSize: 'clamp(2.5rem, 6vw, 5rem)' }}
             >
-              Events from
+              Roads are
               <br />
-              <span className="italic text-coral">your clubs.</span>
+              <span className="italic text-coral">always open.</span>
             </h2>
           </div>
 
-          <div className="lg:text-right text-sm text-rn-muted leading-relaxed max-w-[340px]">
-            <p>
-              {data?.source ?? 'Curating this week…'}
-            </p>
-            <p className="text-rn-faint text-xs mt-2 flex items-center lg:justify-end gap-1.5">
-              <ArrowsClockwise size={11} weight="bold" />
-              {data
-                ? `Updated ${fmtTime(data.lastUpdated)} · refreshes every 10 min`
-                : 'Checking for updates…'}
-            </p>
-          </div>
         </motion.header>
 
         {/* Loading state */}
