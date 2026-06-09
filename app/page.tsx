@@ -9,7 +9,6 @@ import Hero from '@/components/sections/Hero'
 import Marquee from '@/components/ui/Marquee'
 import Agenda from '@/components/sections/Agenda'
 import FeaturedClub from '@/components/sections/FeaturedClub'
-import About from '@/components/sections/About'
 import Footer from '@/components/sections/Footer'
 
 /**
@@ -33,7 +32,6 @@ export default function Home() {
       <Marquee />
       <Agenda />
       <FeaturedClub />
-      <About />
       <Footer />
     </main>
   )

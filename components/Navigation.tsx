@@ -7,7 +7,6 @@ import Image from 'next/image'
 const LINKS = [
   { label: 'Agenda',  href: '#agenda' },
   { label: 'Clubs',   href: '#clubs' },
-  { label: 'About',   href: '#about' },
 ]
 
 export default function Navigation() {
